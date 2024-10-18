@@ -7,7 +7,7 @@ canvas.height = window.innerHeight;
 const mc = {
     x: 100,
     y: canvas.height - 90,
-    dx: 25,
+    dx: 15,
     dy: 25,
     sw: 50,
     sh: 90,
@@ -15,11 +15,18 @@ const mc = {
     isGrounded: true
 }
 
+let keys = {
+    'ArrowLeft': false,
+    'ArrowRight': false
+}
+
 
 function update(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     gravity();
+
+    mcMovement();
 
     ctx.fillRect(mc.x, mc.y, mc.sw, mc.sh);
 
@@ -42,16 +49,22 @@ function gravity(){
 }
 
 
-document.addEventListener('keydown', mcMovement);
+document.addEventListener('keydown', ()=>{
+    keys[event.key] = true;
+});
+
+document.addEventListener('keyup', ()=>{
+    keys[event.key] = false;
+});
 
 function mcMovement(){
-    if(event.key == 'ArrowLeft' && mc.x > 0){
+    if(keys['ArrowLeft'] && mc.x > 0){
         mc.x -= mc.dx;
     }
-    if(event.key == 'ArrowRight' && mc.x < canvas.width - mc.sw){
+    if(keys['ArrowRight'] && mc.x < canvas.width - mc.sw){
         mc.x += mc.dx;
     }
-    if(event.key == 'ArrowUp' && mc.isGrounded){
+    if(keys['ArrowUp'] && mc.isGrounded){
         mc.vy += mc.dy;
         mc.isGrounded = false
     }
